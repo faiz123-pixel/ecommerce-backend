@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.learn.ecommerce.dtos.CategoryUpdateRequestDto;
 import com.learn.ecommerce.dtos.ProductDto;
+import com.learn.ecommerce.entities.Categories;
+import com.learn.ecommerce.repositories.CategoriesRepository;
+import com.learn.ecommerce.services.CategoriesService;
 import com.learn.ecommerce.services.ProductService;
 
 @RestController
@@ -14,8 +18,12 @@ import com.learn.ecommerce.services.ProductService;
 @CrossOrigin
 public class ProductController {
 
+
     @Autowired
     private ProductService productService;
+    @Autowired
+    private CategoriesRepository categoriesRepository;
+
 
     @PostMapping
     public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto) {
@@ -58,5 +66,23 @@ public class ProductController {
     public ResponseEntity<String> activateProduct(@PathVariable Integer id) {
         productService.activateProduct(id);
         return ResponseEntity.ok("Product activated successfully");
+    }
+    
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<ProductDto>> getProductByCategory(@PathVariable Integer categoryId)
+    {
+    	Categories categories = categoriesRepository.findById(categoryId).orElseThrow(()->new RuntimeException("Category Not Found"));
+    	return ResponseEntity.ok(productService.getProductByCategory(categories));
+    }
+    
+    @PutMapping("/category/update")
+    public String updateProductCategory(@RequestBody CategoryUpdateRequestDto request) {
+
+        int updatedCount = productService.reassignCategory(
+                request.getOldCategoryId(),
+                request.getNewCategoryId()
+        );
+
+        return updatedCount + " products updated successfully";
     }
 }

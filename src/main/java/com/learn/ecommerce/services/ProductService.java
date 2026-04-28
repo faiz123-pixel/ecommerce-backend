@@ -3,6 +3,7 @@ package com.learn.ecommerce.services;
 import java.util.List;
 
 import com.learn.ecommerce.dtos.ProductDto;
+import com.learn.ecommerce.entities.Categories;
 
 public interface ProductService {
 
@@ -12,6 +13,8 @@ public interface ProductService {
 	
 	List<ProductDto> getAllProduct();
 	
+	List<ProductDto> getProductByCategory(Categories category);
+	
 	void deleteProduct(Integer id);
 	
 	void deactivateProduct(Integer id);
@@ -19,5 +22,7 @@ public interface ProductService {
 	void activateProduct(Integer id);
 	
 	ProductDto getProductById(Integer id);
+	
+	public int reassignCategory(Integer oldCategoryId, Integer newCategoryId);
 	
 }

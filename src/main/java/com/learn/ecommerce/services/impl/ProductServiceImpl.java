@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.learn.ecommerce.dtos.ProductDto;
+import com.learn.ecommerce.entities.Categories;
 import com.learn.ecommerce.entities.Product;
 import com.learn.ecommerce.repositories.ProductRepository;
 import com.learn.ecommerce.services.ProductService;
@@ -94,4 +95,19 @@ public class ProductServiceImpl implements ProductService{
 
 		return modelMapper.map(product, ProductDto.class);
 	}
+
+	@Override
+	public List<ProductDto> getProductByCategory(Categories category) {
+		List<Product> list = productRepository.findByCategoryId(category);
+		return list.stream().map(p->modelMapper.map(p, ProductDto.class)).toList();
+	}
+	
+	public int reassignCategory(Integer oldCategoryId, Integer newCategoryId) {
+
+        if (oldCategoryId.equals(newCategoryId)) {
+            throw new RuntimeException("Old and new category cannot be same");
+        }
+
+        return productRepository.updateCategory(oldCategoryId, newCategoryId);
+    }
 }

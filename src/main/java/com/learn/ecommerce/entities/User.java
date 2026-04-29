@@ -1,9 +1,12 @@
 package com.learn.ecommerce.entities;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,23 +31,36 @@ import lombok.NoArgsConstructor;
 public class User implements UserDetails{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;
 	
-	@Column(length = 50,nullable = false)
+	@Column(length = 100,nullable = false)
 	private String firstName;
 	
-	@Column(length = 50,nullable = false)
+	@Column(length = 100,nullable = false)
 	private String lastName;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = true,length = 100)
 	private String email;
+	
+	@Column(length = 15)
+	private String phone;
 	
 	@Column(nullable = false)
 	private String password;
 
 	@ManyToOne
 	private Role role;
+	
+	@CreationTimestamp
+	@Column(updatable = false)
+	private LocalDateTime createdAt;
+	
+	@UpdateTimestamp
+	private LocalDateTime updatedAt;
+	
+	private Boolean status; 
+	
 	
 	@OneToMany(mappedBy = "customerId")
 	@JsonIgnore

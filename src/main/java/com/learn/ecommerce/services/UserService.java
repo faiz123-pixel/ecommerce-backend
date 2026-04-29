@@ -10,5 +10,9 @@ public interface UserService {
 	boolean checkEmailExists(String email);
 	UserDto getUserById(String id); 
 	List<UserDto> getAllUser();
+	UserDto updateUser(String id,UserDto userDto);
+	void activateUser(String id);
+	void deactivateUser(String id);
+	void deleteUser(String id);
 	
 }

@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserService{
 		Role role = roleRepository.findByRoleName(AppRole.ROLE_USER).orElseThrow(()->new RuntimeException("Role not found"));
 		
 		user.setRole(role);
+		user.setStatus(true);
 		
 		User savedUser = userRepository.save(user);
 		
@@ -67,6 +68,39 @@ public class UserServiceImpl implements UserService{
 	public List<UserDto> getAllUser() {
 		List<User> list = userRepository.findAll();
 		return list.stream().map(u->modelMapper.map(u, UserDto.class)).toList();
+	}
+
+	@Override
+	public UserDto updateUser(String id, UserDto userDto) {
+		
+		User user = userRepository.findById(id).orElseThrow(()->new RuntimeException("User not found"));
+		user.setFirstName(userDto.getFirstName());
+		user.setEmail(userDto.getEmail());
+		user.setPhone(userDto.getPhone());
+		User savedUser = userRepository.save(user);
+		
+		return modelMapper.map(savedUser, UserDto.class);
+	}
+
+	@Override
+	public void activateUser(String id) {
+		User user = userRepository.findById(id).orElseThrow(()->new RuntimeException("User not found"));
+		user.setStatus(true);
+		userRepository.save(user);
+		
+	}
+
+	@Override
+	public void deactivateUser(String id) {
+		User user = userRepository.findById(id).orElseThrow(()->new RuntimeException("User not found"));
+		user.setStatus(false);
+		userRepository.save(user);
+	}
+	
+	@Override
+	public void deleteUser(String id)
+	{
+		userRepository.deleteById(id);
 	}
 	
 }

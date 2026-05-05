@@ -5,52 +5,46 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.learn.ecommerce.enumes.OrderStatus;
+import com.learn.ecommerce.enumes.PaymentStatus;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-public class Orders {
-	
+public class Payments {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer orderId;
+	private Integer paymentId;
 	
-	private Integer totalAmount;
+	private String razorpayPaymentId;
 	
-	@ManyToOne
-	private User customerId;
-
+	@OneToOne
+	private Orders order;
+	
+	private double amount;
+	
+	@Column(length = 50)
+	private String paymentMethod;
+	
 	@Enumerated(EnumType.STRING)
-	private OrderStatus orderStatus;
-
-	private String shippingAddress;
-
-	@CreationTimestamp
-    private LocalDateTime createdAt;
-
-	@UpdateTimestamp
-    private LocalDateTime updatedAt;
-
-    private Boolean status;
-    
-    @OneToOne(mappedBy = "order")
-    @JsonIgnore
-    private Payments payments;
+	private PaymentStatus paymentStatus;
 	
-
+	@CreationTimestamp
+	private LocalDateTime createdAt;
+	
+	@UpdateTimestamp
+	private LocalDateTime updatedAt;
 }

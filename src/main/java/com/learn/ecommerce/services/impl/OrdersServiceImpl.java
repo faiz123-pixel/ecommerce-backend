@@ -2,15 +2,22 @@ package com.learn.ecommerce.services.impl;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.learn.ecommerce.dtos.OrdersDto;
+import com.learn.ecommerce.entities.Carts;
 import com.learn.ecommerce.entities.Orders;
+import com.learn.ecommerce.entities.Product;
+import com.learn.ecommerce.entities.User;
 import com.learn.ecommerce.enumes.OrderStatus;
+import com.learn.ecommerce.repositories.CartsRepository;
 import com.learn.ecommerce.repositories.OrdersRepository;
+import com.learn.ecommerce.repositories.ProductRepository;
+import com.learn.ecommerce.repositories.UserRepository;
 import com.learn.ecommerce.services.OrdersService;
 
 @Service
@@ -18,15 +25,42 @@ public class OrdersServiceImpl implements OrdersService{
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	@Autowired CartsRepository cartsRepository;
 	
 	@Autowired
 	private OrdersRepository ordersRepository;
+	
+	@Autowired
+	private ProductRepository productRepository;
+	
+	@Autowired 
+	private UserRepository userRepository;
 
 	@Override
 	public OrdersDto placeOrder(OrdersDto ordersDto) {
 		Orders orders = modelMapper.map(ordersDto, Orders.class);
 		orders.setOrderStatus(OrderStatus.PENDING);
         orders.setStatus(true);
+        User user = userRepository.findById(ordersDto.getCustomerId()).orElseThrow(()->new RuntimeException("User not found"));
+        
+        List<Carts> list = cartsRepository.findByUser(user);
+        if(list.isEmpty())
+        {
+        	throw new RuntimeException("Cart is empty");
+        }
+        
+        for(Carts cart :list)
+        {
+        	Product product = cart.getProduct();
+        	if(product.getInventoryCount()<cart.getQuantity())
+        	{
+        		throw new RuntimeException("Out of stock");
+        	}
+        	product.setInventoryCount(product.getInventoryCount()-cart.getQuantity());
+        	productRepository.save(product);
+        }
+        
+        
 		Orders savedOrder = ordersRepository.save(orders);
 		return modelMapper.map(savedOrder, OrdersDto.class);
 	}

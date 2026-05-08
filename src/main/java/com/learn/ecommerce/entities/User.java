@@ -66,6 +66,10 @@ public class User implements UserDetails{
 	@JsonIgnore
 	private List<Orders> orders; 
 	
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Carts> carts;
+	
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -41,13 +41,13 @@ public class SecurityConfig {
 		.cors(Customizer.withDefaults())
 		.authorizeHttpRequests(request->
 		{
-			request.requestMatchers(HttpMethod.POST,"/users/register","/auth/login","/orders")
+			request.requestMatchers(HttpMethod.POST,"/users/register","/auth/login","/orders","/carts")
 			.permitAll()
 			.requestMatchers(HttpMethod.GET,"/categories/**","/products/**","/users/check-email")
 			.permitAll()
 			.requestMatchers(HttpMethod.POST,"/categories","/products","/orders/**","/users/**")
 			.hasRole("ADMIN")
-			.requestMatchers(HttpMethod.GET,"/users/**","/orders/**","/products/**","/users/**")
+			.requestMatchers(HttpMethod.GET,"/users/**","/orders/**","/products/**")
 			.hasRole("ADMIN")
 			.requestMatchers(HttpMethod.PUT,"/categories/**","/products/**","/orders/**","/users/**")
 			.hasRole("ADMIN")

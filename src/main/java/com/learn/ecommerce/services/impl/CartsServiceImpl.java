@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.learn.ecommerce.dtos.CartsDto;
 import com.learn.ecommerce.entities.Carts;
+import com.learn.ecommerce.entities.User;
 import com.learn.ecommerce.repositories.CartsRepository;
 import com.learn.ecommerce.repositories.ProductRepository;
+import com.learn.ecommerce.repositories.UserRepository;
 import com.learn.ecommerce.services.CartsService;
 
 @Service
@@ -20,6 +22,9 @@ public class CartsServiceImpl implements CartsService{
 	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Autowired 
 	private CartsRepository cartsRepository;
@@ -61,6 +66,15 @@ public class CartsServiceImpl implements CartsService{
 		Carts cart = cartsRepository.findById(id).orElseThrow(()->new RuntimeException("cart not found"));
 		cartsRepository.delete(cart);
 		
+	}
+
+	@Override
+	public List<CartsDto> getCartByUser(String id) {
+		User user = userRepository.findById(id).orElseThrow(()->new RuntimeException("User not found"));
+
+		List<Carts> list = cartsRepository.findByUser(user);
+		
+		return list.stream().map(c->modelMapper.map(c, CartsDto.class)).toList();
 	}
 
 }

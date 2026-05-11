@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.learn.ecommerce.dtos.UserDto;
-import com.learn.ecommerce.security.UserDetailsImpl;
 import com.learn.ecommerce.services.UserService;
 
 
@@ -26,16 +25,9 @@ import com.learn.ecommerce.services.UserService;
 @CrossOrigin
 public class UserController {
 
-    private final UserDetailsImpl userDetailsImpl;
-
 	
 	@Autowired
 	private UserService userService;
-
-
-    UserController(UserDetailsImpl userDetailsImpl) {
-        this.userDetailsImpl = userDetailsImpl;
-    }
 
 
 	@PostMapping("/register")

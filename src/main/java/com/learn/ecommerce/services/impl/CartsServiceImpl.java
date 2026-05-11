@@ -10,7 +10,6 @@ import com.learn.ecommerce.dtos.CartsDto;
 import com.learn.ecommerce.entities.Carts;
 import com.learn.ecommerce.entities.User;
 import com.learn.ecommerce.repositories.CartsRepository;
-import com.learn.ecommerce.repositories.ProductRepository;
 import com.learn.ecommerce.repositories.UserRepository;
 import com.learn.ecommerce.services.CartsService;
 
@@ -19,9 +18,6 @@ public class CartsServiceImpl implements CartsService{
 
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	@Autowired
-	private ProductRepository productRepository;
 	
 	@Autowired
 	private UserRepository userRepository;

@@ -10,7 +10,6 @@ import com.learn.ecommerce.dtos.CategoryUpdateRequestDto;
 import com.learn.ecommerce.dtos.ProductDto;
 import com.learn.ecommerce.entities.Categories;
 import com.learn.ecommerce.repositories.CategoriesRepository;
-import com.learn.ecommerce.services.CategoriesService;
 import com.learn.ecommerce.services.ProductService;
 
 @RestController

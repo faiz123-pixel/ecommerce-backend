@@ -135,4 +135,11 @@ public class OrdersServiceImpl implements OrdersService{
 	    ordersRepository.save(order);
 	}
 
+	@Override
+	public List<OrdersDto> getOrdersByUser(String id) {
+		User user = userRepository.findById(id).orElseThrow(()->new RuntimeException("User not found"));
+		List<Orders> orders = ordersRepository.findByCustomerId(user);
+		return orders.stream().map((order)->modelMapper.map(order, OrdersDto.class)).toList();
+	}
+
 }

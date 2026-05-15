@@ -1,12 +1,9 @@
 package com.learn.ecommerce.entities;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,57 +11,37 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-public class Product {
+public class Reviews {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int productId;
-	
-	@Column(length = 150)
-	private String productName;
-	
-	@Column(length = 500)
-	private String description;
-	
-	private Double price;
-	
-	@Column(length = 50 , unique = true)
-	private String SKU;
+	private Integer id;
 	
 	@ManyToOne
-	private Categories categoryId;
+	private User user;
 	
-	private int inventoryCount;
+	@ManyToOne
+	private Product product;
+	
+	@Column(nullable = false)
+	private Integer rating;
+	
+	@Column(length = 1000)
+	private String reviewText;
 	
 	@CreationTimestamp
-	@Column(updatable = false)
 	private LocalDateTime createdAt;
 	
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
 	
-	private Boolean status; 
-	
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
-	private List<Carts> carts;
-	
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
-	private List<Wishlist> wishlist;
-	
-	@OneToMany(mappedBy = "product")
-	@JsonIgnore
-	private List<Reviews> reviews;
-	
-	
+	private Boolean status;
 }

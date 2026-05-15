@@ -41,6 +41,13 @@ public class OrdersController {
 		return ResponseEntity.ok(allOrders);
 	}
 	
+	@GetMapping("/user/{id}")
+	public ResponseEntity<List<OrdersDto>> getOrdersByUser(@PathVariable String id)
+	{
+		List<OrdersDto> allOrders = ordersService.getOrdersByUser(id);
+		return ResponseEntity.ok(allOrders);
+	}
+	
 	 @GetMapping("/status/{status}")
 	    public ResponseEntity<List<OrdersDto>> getOrdersByStatus(@PathVariable String status) {
 	        List<OrdersDto> orders = ordersService.getOrdersByStatus(status);

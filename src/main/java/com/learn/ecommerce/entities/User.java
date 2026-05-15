@@ -74,6 +74,10 @@ public class User implements UserDetails{
 	@JsonIgnore
 	private List<Wishlist> wishlist;
 	
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Reviews> reviews;
+	
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

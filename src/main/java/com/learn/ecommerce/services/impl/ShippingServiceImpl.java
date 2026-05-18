@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.learn.ecommerce.dtos.ShippingDto;
-import com.learn.ecommerce.entities.Orders;
 import com.learn.ecommerce.entities.Shipping;
 import com.learn.ecommerce.enumes.ShippingStatus;
-import com.learn.ecommerce.repositories.OrdersRepository;
 import com.learn.ecommerce.repositories.ShippingRepository;
 import com.learn.ecommerce.services.ShippingService;
 
@@ -20,8 +18,6 @@ public class ShippingServiceImpl implements ShippingService{
 	@Autowired
 	private ShippingRepository shippingRepository;
 	
-	@Autowired
-	private OrdersRepository ordersRepository;
 	
 	@Autowired ModelMapper modelMapper;
 

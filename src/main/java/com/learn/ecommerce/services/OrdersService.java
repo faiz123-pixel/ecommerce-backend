@@ -3,7 +3,6 @@ package com.learn.ecommerce.services;
 import java.util.List;
 
 import com.learn.ecommerce.dtos.OrdersDto;
-import com.learn.ecommerce.entities.User;
 
 
 public interface OrdersService {
